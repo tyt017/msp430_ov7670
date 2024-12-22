@@ -106,8 +106,11 @@ unsigned char rd_sensor_reg(unsigned char regID, unsigned char *regDat)
         return 2; // error return
     }
     delay_us(100);
+
     stopSCCB(); // stop sending order
+
     delay_us(100);
+
     startSCCB();
     if(SCCBwriteByte(0x43) == 0) // read address
     {
