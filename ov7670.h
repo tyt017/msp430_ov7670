@@ -6,11 +6,11 @@
 #include <msp430.h>
 #include "SCCB.h"
 
-#define pixel_w 320
-#define pixel_h 240
+#define pixel_w 160
+#define pixel_h 120
 
 
-
+void delay_ms(unsigned int ms);
 unsigned char ov7670_init(void);
 unsigned char wr_sensor_reg(unsigned char regID, unsigned char *regDat);
 unsigned char rd_sensor_reg(unsigned char regID, unsigned char *regDat);

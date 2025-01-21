@@ -4,7 +4,7 @@
 #include "pins.h"
 #include "ov7670.h"
 
-#define IMAGE_SIZE (320 * 240)
+#define IMAGE_SIZE (160 * 120)
 
 unsigned int ov_sta = 0;
 
@@ -74,12 +74,15 @@ int main(void)
 
 	unsigned int p = 0, j = 0;
 
+	ov7670_init();
 	fifo_init();
 	vsync_interrupt_init();
 
 	FIFO_OE_L;
 
 	__enable_interrupt();
+
+//	delay_ms(100);
 
 	while(1)
 	{
