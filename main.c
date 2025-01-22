@@ -3,13 +3,16 @@
 #include <stdint.h>
 #include "pins.h"
 #include "ov7670.h"
+#include "uart.h"
 
 #define IMAGE_SIZE (160 * 120)
 
 unsigned int ov_sta = 0;
 
+//#pragma LOCATION(data_fifo, 0x10000)
 #pragma PERSISTENT(data_fifo)
-unsigned char data_fifo[IMAGE_SIZE] = {0};
+static unsigned char data_fifo[IMAGE_SIZE] = {0};
+//unsigned char *data_fifo = 0x10000;
 
 volatile uint8_t FIFO_1 = 0;
 volatile uint8_t FIFO_2 = 0;
@@ -36,7 +39,7 @@ __interrupt void PORT4_B1_ISR(void)
         {
 //            FIFO_WR_L;
             ov_sta = 2; // finishing
-            P4IE &= ~BIT1; // 禁用 P4.1 中斷
+            P4IE &= ~BIT1;
             P4IFG &= ~BIT1;
         }
     }
@@ -45,13 +48,13 @@ __interrupt void PORT4_B1_ISR(void)
 
 void vsync_interrupt_init(void)
 {
-    P4DIR &= ~BIT1; // P4.1 設為輸入
-    P4REN |= BIT1;  // 啟用上拉電阻
-    P4OUT |= BIT1;  // 上拉
+    P4DIR &= ~BIT1;
+    P4REN |= BIT1;
+    P4OUT |= BIT1;
 
-    P4IES |= BIT1;  // 偵測下降沿
-    P4IE  |= BIT1;  // 啟用 P4.1 中斷
-    P4IFG &= ~BIT1; // 清除中斷標誌
+    P4IES |= BIT1;
+    P4IE  |= BIT1;
+    P4IFG &= ~BIT1;
 }
 
 void fifo_init(void)
@@ -74,6 +77,7 @@ int main(void)
 
 	unsigned int p = 0, j = 0;
 
+	uart_init();
 	ov7670_init();
 	fifo_init();
 	vsync_interrupt_init();
@@ -84,8 +88,10 @@ int main(void)
 
 //	delay_ms(100);
 
+
 	while(1)
 	{
+//	    uart_send_string("this is test.\n");
 	    unsigned int index = 0;
 	    if(ov_sta == 2)
         {
@@ -103,28 +109,34 @@ int main(void)
             {
                 for(j = 0; j< pixel_w; j++)
                 {
+//                    if (p == 60)
+//                        p = 60;
+//                    else if (p == 119)
+//                        p = 119;
                     FIFO_RCK_L;
-//                    FIFO_1 = P3IN & 0x0f;
-//                    FIFO_2 = P3IN & 0xf0;
-//                    FIFO_data = FIFO_1 | FIFO_2;
-                    FIFO_data = P3IN;
+                    FIFO_1 = P3IN & 0x0f;
+                    FIFO_2 = P3IN & 0xf0;
+                    FIFO_data = FIFO_1 | FIFO_2;
+//                    FIFO_data = P3IN;
                     data_fifo[index++] = FIFO_data;
                     FIFO_RCK_H;
 
                     FIFO_RCK_L;
-//                    FIFO_1 = P3IN & 0x0f;
-//                    FIFO_2 = P3IN & 0xf0;
-//                    FIFO_data = FIFO_1 | FIFO_2;
-                    FIFO_data = P3IN;
+                    FIFO_1 = P3IN & 0x0f;
+                    FIFO_2 = P3IN & 0xf0;
+                    FIFO_data = FIFO_1 | FIFO_2;
+//                    FIFO_data = P3IN;
                     data_fifo[index++] = FIFO_data;
                     FIFO_RCK_H;
                 }
             }
             ov_sta = 0;
+
+//            uart_send_string("this is test.\n");
+            uart_send_data(data_fifo, IMAGE_SIZE);
+
             P4IE |= BIT1;
         }
 	}
 
-
-	return 0;
 }

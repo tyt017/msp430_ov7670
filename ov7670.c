@@ -8,15 +8,22 @@
 #include "ov7670.h"
 
 const unsigned char ov7670_reg[][2] = {
-                                       {0x12, 0x80}, // RESET
-                                       {0x11, 0x01}, // Internal clock prescaler
-                                       {0x12, 0x14}, // QVGA mode
-                                       {0x17, 0x16}, // HSTART
-                                       {0x18, 0x04}, // HSTOP
-                                       {0x19, 0x02}, // VSTART
-                                       {0x1A, 0x7A}, // VSTOP
-                                       {0x32, 0x24}, // HREF
-                                       {0x00, 0x00}, // end
+    {0x12, 0x80},  // RESET
+    {0x11, 0x01},  // CLKRC: Prescaler
+    {0x12, 0x14},  // COM7: QVGA 模式
+    {0x73, 0xF0},  // DSP_CTRL3: 像素時鐘分頻器（QQVGA）
+    {0x70, 0x3A},  // SCALING_XSC: X 軸縮放控制
+    {0x71, 0x35},  // SCALING_YSC: Y 軸縮放控制
+    {0x72, 0x11},  // SCALING_DCWCTR: 縮放與裁剪控制
+    {0x17, 0x11},  // HSTART: 水平起始位置
+    {0x18, 0x75},  // HSTOP: 水平結束位置
+    {0x19, 0x01},  // VSTART: 垂直起始位置
+    {0x1A, 0x97},  // VSTOP: 垂直結束位置
+    {0x32, 0x36},  // HREF: 水平邊界設置
+    {0x40, 0xD0},  // COM15: RGB565 輸出格式
+    {0x3A, 0x04},  // TSLB: 正常輸出順序
+    {0x8C, 0x00},  // RGB444: 關閉 RGB444
+    {0x00, 0x00}  // END
 };
 
 void delay_ms(unsigned int ms)

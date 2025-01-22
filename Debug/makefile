@@ -14,9 +14,9 @@ ORDERED_OBJS += \
 "./fifo.obj" \
 "./main.obj" \
 "./ov7670.obj" \
+"./uart.obj" \
 "../lnk_msp430fr5994.cmd" \
 $(GEN_CMDS__FLAG) \
--llibmpu_init.a \
 -llibmath.a \
 -llibc.a \
 
@@ -139,15 +139,15 @@ all: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 msp430_ov7670.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: MSP430 Linker'
-	"C:/ti/ccs1271/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/bin/cl430" -vmspx --data_model=restricted --use_hw_mpy=F5 --advice:power=all --advice:hw_config=all --define=__MSP430FR5994__ --define=_MPU_ENABLE --define=_MPU_MANUAL --define=_MPU_SEGB1=0x4400 --define=_MPU_SEGB2=0x4800 --define=_MPU_SAM1=11 --define=_MPU_SAM2=11 --define=_MPU_SAM3=15 --define=_MPU_SAM0=9 -g --printf_support=minimal --diag_warning=225 --diag_wrap=off --display_error_number --silicon_errata=CPU21 --silicon_errata=CPU22 --silicon_errata=CPU40 -z -m"msp430_ov7670.map" --heap_size=300 --stack_size=160 --cinit_hold_wdt=on -i"C:/ti/ccs1271/ccs/ccs_base/msp430/include" -i"C:/ti/ccs1271/ccs/ccs_base/msp430/lib/5xx_6xx_FRxx" -i"C:/ti/ccs1271/ccs/ccs_base/msp430/lib/FR59xx" -i"C:/ti/ccs1271/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib" -i"C:/ti/ccs1271/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include" --priority --reread_libs --define=_MPU_ENABLE --define=_MPU_MANUAL --define=_MPU_SEGB1=0x4400 --define=_MPU_SEGB2=0x4800 --define=_MPU_SAM1=11 --define=_MPU_SAM2=11 --define=_MPU_SAM3=15 --define=_MPU_SAM0=9 --diag_wrap=off --display_error_number --warn_sections --xml_link_info="msp430_ov7670_linkInfo.xml" --use_hw_mpy=F5 --rom_model -o "msp430_ov7670.out" $(ORDERED_OBJS)
+	"C:/ti/ccs1271/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/bin/cl430" -vmspx --code_model=large --data_model=large --near_data=globals --use_hw_mpy=F5 --advice:power=all --advice:hw_config=all --define=__MSP430FR5994__ -g --printf_support=minimal --diag_warning=225 --diag_wrap=off --display_error_number --silicon_errata=CPU21 --silicon_errata=CPU22 --silicon_errata=CPU40 -z -m"msp430_ov7670.map" --heap_size=300 --stack_size=160 --cinit_hold_wdt=on -i"C:/ti/ccs1271/ccs/ccs_base/msp430/include" -i"C:/ti/ccs1271/ccs/ccs_base/msp430/lib/5xx_6xx_FRxx" -i"C:/ti/ccs1271/ccs/ccs_base/msp430/lib/FR59xx" -i"C:/ti/ccs1271/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib" -i"C:/ti/ccs1271/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include" --priority --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="msp430_ov7670_linkInfo.xml" --use_hw_mpy=F5 --rom_model -o "msp430_ov7670.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)
-	-$(RM) "SCCB.obj" "fifo.obj" "main.obj" "ov7670.obj" 
-	-$(RM) "SCCB.d" "fifo.d" "main.d" "ov7670.d" 
+	-$(RM) "SCCB.obj" "fifo.obj" "main.obj" "ov7670.obj" "uart.obj" 
+	-$(RM) "SCCB.d" "fifo.d" "main.d" "ov7670.d" "uart.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

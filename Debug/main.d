@@ -22,6 +22,7 @@ main.obj: C:/ti/ccs1271/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/sys/
 main.obj: ../pins.h
 main.obj: ../ov7670.h
 main.obj: ../SCCB.h
+main.obj: ../uart.h
 
 ../main.c:
 
@@ -66,4 +67,6 @@ C:/ti/ccs1271/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/sys/_stdint.h:
 ../ov7670.h:
 
 ../SCCB.h:
+
+../uart.h:
 

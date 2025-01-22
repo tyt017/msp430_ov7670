@@ -12,36 +12,42 @@ C_SRCS += \
 ../SCCB.c \
 ../fifo.c \
 ../main.c \
-../ov7670.c 
+../ov7670.c \
+../uart.c 
 
 C_DEPS += \
 ./SCCB.d \
 ./fifo.d \
 ./main.d \
-./ov7670.d 
+./ov7670.d \
+./uart.d 
 
 OBJS += \
 ./SCCB.obj \
 ./fifo.obj \
 ./main.obj \
-./ov7670.obj 
+./ov7670.obj \
+./uart.obj 
 
 OBJS__QUOTED += \
 "SCCB.obj" \
 "fifo.obj" \
 "main.obj" \
-"ov7670.obj" 
+"ov7670.obj" \
+"uart.obj" 
 
 C_DEPS__QUOTED += \
 "SCCB.d" \
 "fifo.d" \
 "main.d" \
-"ov7670.d" 
+"ov7670.d" \
+"uart.d" 
 
 C_SRCS__QUOTED += \
 "../SCCB.c" \
 "../fifo.c" \
 "../main.c" \
-"../ov7670.c" 
+"../ov7670.c" \
+"../uart.c" 
 
 

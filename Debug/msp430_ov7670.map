@@ -1,10 +1,10 @@
 ******************************************************************************
                   MSP430 Linker PC v21.6.1                     
 ******************************************************************************
->> Linked Tue Jan 21 13:51:52 2025
+>> Linked Wed Jan 22 12:44:07 2025
 
 OUTPUT FILE NAME:   <msp430_ov7670.out>
-ENTRY POINT SYMBOL: "_c_int00_noargs_mpu"  address: 00008c46
+ENTRY POINT SYMBOL: "_c_int00_noargs"  address: 00008c46
 
 
 MEMORY CONFIGURATION
@@ -17,10 +17,10 @@ MEMORY CONFIGURATION
   INFOC                 00001880   00000080  00000000  00000080  RWIX
   INFOB                 00001900   00000080  00000000  00000080  RWIX
   INFOA                 00001980   00000080  00000000  00000080  RWIX
-  RAM                   00001c00   00001000  000000a5  00000f5b  RWIX
+  RAM                   00001c00   00001000  000000a7  00000f59  RWIX
   LEARAM                00002c00   00000ec8  00000000  00000ec8  RWIX
   LEASTACK              00003ac8   00000138  00000000  00000138  RWIX
-  FRAM                  00004000   0000bf80  00004c98  000072e8  RWIX
+  FRAM                  00004000   0000bf80  00004cb4  000072cc  RWIX
   JTAGSIGNATURE         0000ff80   00000004  00000004  00000000  RWIX  ffff 
   BSLSIGNATURE          0000ff84   00000004  00000004  00000000  RWIX  ffff 
   IPESIGNATURE          0000ff88   00000008  00000008  00000000  RWIX  ffff 
@@ -80,7 +80,7 @@ MEMORY CONFIGURATION
   INT53                 0000fffa   00000002  00000002  00000000  RWIX
   INT54                 0000fffc   00000002  00000002  00000000  RWIX
   RESET                 0000fffe   00000002  00000002  00000000  RWIX
-  FRAM2                 00010000   00033ff8  000005ca  00033a2e  RWIX
+  FRAM2                 00010000   00033ff8  000006f4  00033904  RWIX
 
 
 SECTION ALLOCATION MAP
@@ -88,6 +88,9 @@ SECTION ALLOCATION MAP
  output                                  attributes/
 section   page    origin      length       input sections
 --------  ----  ----------  ----------   ----------------
+.data      0    00001c00    00000005     UNINITIALIZED
+                  00001c00    00000005     main.obj (.data)
+
 .TI.persistent 
 *          0    00004000    00004b00     
                   00004000    00004b00     main.obj (.TI.persistent:data_fifo)
@@ -109,26 +112,27 @@ section   page    origin      length       input sections
 .ipe:_isr 
 *          0    00008c00    00000000     UNINITIALIZED
 
-.cinit     0    00008c80    00000018     
-                  00008c80    00000008     (__TI_handler_table)
-                  00008c88    00000007     (.cinit..data.load) [load image, compression = lzss]
-                  00008c8f    00000001     --HOLE-- [fill = 0]
-                  00008c90    00000008     (__TI_cinit_table)
+.cinit     0    00008c8a    0000002a     
+                  00008c8a    0000000c     (__TI_handler_table)
+                  00008c96    00000007     (.cinit..data.load) [load image, compression = lzss]
+                  00008c9d    00000001     --HOLE-- [fill = 0]
+                  00008c9e    00000006     (.cinit..bss.load) [load image, compression = zero_init]
+                  00008ca4    00000010     (__TI_cinit_table)
 
 .init_array 
 *          0    00004000    00000000     UNINITIALIZED
 
 .text:_isr 
-*          0    00008c00    0000006e     
+*          0    00008c00    0000006a     
                   00008c00    00000046     main.obj (.text:_isr:PORT4_B1_ISR)
-                  00008c46    00000020     rts430x_lc_rd_eabi.lib : boot.c.obj (.text:_isr:_c_int00_noargs_mpu)
-                  00008c66    00000008                            : isr_trap.asm.obj (.text:_isr:__TI_ISR_TRAP)
+                  00008c46    0000001c     rts430x_lc_ld_eabi.lib : boot.c.obj (.text:_isr:_c_int00_noargs)
+                  00008c62    00000008                            : isr_trap.asm.obj (.text:_isr:__TI_ISR_TRAP)
 
-.data      0    00001c00    00000005     UNINITIALIZED
-                  00001c00    00000005     main.obj (.data)
+.bss       0    00001c06    00000002     UNINITIALIZED
+                  00001c06    00000002     (.common:i)
 
 .stack     0    00002b60    000000a0     UNINITIALIZED
-                  00002b60    00000004     rts430x_lc_rd_eabi.lib : boot.c.obj (.stack)
+                  00002b60    00000004     rts430x_lc_ld_eabi.lib : boot.c.obj (.stack)
                   00002b64    0000009c     --HOLE--
 
 $fill000   0    0000ff80    00000004     
@@ -141,183 +145,185 @@ $fill002   0    0000ff88    00000008
                   0000ff88    00000008     --HOLE-- [fill = ffff]
 
 LEA        0    0000ffb4    00000002     
-                  0000ffb4    00000002     rts430x_lc_rd_eabi.lib : int18.asm.obj (.int18)
+                  0000ffb4    00000002     rts430x_lc_ld_eabi.lib : int18.asm.obj (.int18)
 
 PORT8      0    0000ffb6    00000002     
-                  0000ffb6    00000002     rts430x_lc_rd_eabi.lib : int19.asm.obj (.int19)
+                  0000ffb6    00000002     rts430x_lc_ld_eabi.lib : int19.asm.obj (.int19)
 
 PORT7      0    0000ffb8    00000002     
-                  0000ffb8    00000002     rts430x_lc_rd_eabi.lib : int20.asm.obj (.int20)
+                  0000ffb8    00000002     rts430x_lc_ld_eabi.lib : int20.asm.obj (.int20)
 
 EUSCI_B3   0    0000ffba    00000002     
-                  0000ffba    00000002     rts430x_lc_rd_eabi.lib : int21.asm.obj (.int21)
+                  0000ffba    00000002     rts430x_lc_ld_eabi.lib : int21.asm.obj (.int21)
 
 EUSCI_B2   0    0000ffbc    00000002     
-                  0000ffbc    00000002     rts430x_lc_rd_eabi.lib : int22.asm.obj (.int22)
+                  0000ffbc    00000002     rts430x_lc_ld_eabi.lib : int22.asm.obj (.int22)
 
 EUSCI_B1   0    0000ffbe    00000002     
-                  0000ffbe    00000002     rts430x_lc_rd_eabi.lib : int23.asm.obj (.int23)
+                  0000ffbe    00000002     rts430x_lc_ld_eabi.lib : int23.asm.obj (.int23)
 
 EUSCI_A3   0    0000ffc0    00000002     
-                  0000ffc0    00000002     rts430x_lc_rd_eabi.lib : int24.asm.obj (.int24)
+                  0000ffc0    00000002     rts430x_lc_ld_eabi.lib : int24.asm.obj (.int24)
 
 EUSCI_A2   0    0000ffc2    00000002     
-                  0000ffc2    00000002     rts430x_lc_rd_eabi.lib : int25.asm.obj (.int25)
+                  0000ffc2    00000002     rts430x_lc_ld_eabi.lib : int25.asm.obj (.int25)
 
 PORT6      0    0000ffc4    00000002     
-                  0000ffc4    00000002     rts430x_lc_rd_eabi.lib : int26.asm.obj (.int26)
+                  0000ffc4    00000002     rts430x_lc_ld_eabi.lib : int26.asm.obj (.int26)
 
 PORT5      0    0000ffc6    00000002     
-                  0000ffc6    00000002     rts430x_lc_rd_eabi.lib : int27.asm.obj (.int27)
+                  0000ffc6    00000002     rts430x_lc_ld_eabi.lib : int27.asm.obj (.int27)
 
 TIMER4_A1 
 *          0    0000ffc8    00000002     
-                  0000ffc8    00000002     rts430x_lc_rd_eabi.lib : int28.asm.obj (.int28)
+                  0000ffc8    00000002     rts430x_lc_ld_eabi.lib : int28.asm.obj (.int28)
 
 TIMER4_A0 
 *          0    0000ffca    00000002     
-                  0000ffca    00000002     rts430x_lc_rd_eabi.lib : int29.asm.obj (.int29)
+                  0000ffca    00000002     rts430x_lc_ld_eabi.lib : int29.asm.obj (.int29)
 
 AES256     0    0000ffcc    00000002     
-                  0000ffcc    00000002     rts430x_lc_rd_eabi.lib : int30.asm.obj (.int30)
+                  0000ffcc    00000002     rts430x_lc_ld_eabi.lib : int30.asm.obj (.int30)
 
 RTC_C      0    0000ffce    00000002     
-                  0000ffce    00000002     rts430x_lc_rd_eabi.lib : int31.asm.obj (.int31)
+                  0000ffce    00000002     rts430x_lc_ld_eabi.lib : int31.asm.obj (.int31)
 
 PORT4      0    0000ffd0    00000002     
                   0000ffd0    00000002     main.obj (.int32)
 
 PORT3      0    0000ffd2    00000002     
-                  0000ffd2    00000002     rts430x_lc_rd_eabi.lib : int33.asm.obj (.int33)
+                  0000ffd2    00000002     rts430x_lc_ld_eabi.lib : int33.asm.obj (.int33)
 
 TIMER3_A1 
 *          0    0000ffd4    00000002     
-                  0000ffd4    00000002     rts430x_lc_rd_eabi.lib : int34.asm.obj (.int34)
+                  0000ffd4    00000002     rts430x_lc_ld_eabi.lib : int34.asm.obj (.int34)
 
 TIMER3_A0 
 *          0    0000ffd6    00000002     
-                  0000ffd6    00000002     rts430x_lc_rd_eabi.lib : int35.asm.obj (.int35)
+                  0000ffd6    00000002     rts430x_lc_ld_eabi.lib : int35.asm.obj (.int35)
 
 PORT2      0    0000ffd8    00000002     
-                  0000ffd8    00000002     rts430x_lc_rd_eabi.lib : int36.asm.obj (.int36)
+                  0000ffd8    00000002     rts430x_lc_ld_eabi.lib : int36.asm.obj (.int36)
 
 TIMER2_A1 
 *          0    0000ffda    00000002     
-                  0000ffda    00000002     rts430x_lc_rd_eabi.lib : int37.asm.obj (.int37)
+                  0000ffda    00000002     rts430x_lc_ld_eabi.lib : int37.asm.obj (.int37)
 
 TIMER2_A0 
 *          0    0000ffdc    00000002     
-                  0000ffdc    00000002     rts430x_lc_rd_eabi.lib : int38.asm.obj (.int38)
+                  0000ffdc    00000002     rts430x_lc_ld_eabi.lib : int38.asm.obj (.int38)
 
 PORT1      0    0000ffde    00000002     
-                  0000ffde    00000002     rts430x_lc_rd_eabi.lib : int39.asm.obj (.int39)
+                  0000ffde    00000002     rts430x_lc_ld_eabi.lib : int39.asm.obj (.int39)
 
 TIMER1_A1 
 *          0    0000ffe0    00000002     
-                  0000ffe0    00000002     rts430x_lc_rd_eabi.lib : int40.asm.obj (.int40)
+                  0000ffe0    00000002     rts430x_lc_ld_eabi.lib : int40.asm.obj (.int40)
 
 TIMER1_A0 
 *          0    0000ffe2    00000002     
-                  0000ffe2    00000002     rts430x_lc_rd_eabi.lib : int41.asm.obj (.int41)
+                  0000ffe2    00000002     rts430x_lc_ld_eabi.lib : int41.asm.obj (.int41)
 
 DMA        0    0000ffe4    00000002     
-                  0000ffe4    00000002     rts430x_lc_rd_eabi.lib : int42.asm.obj (.int42)
+                  0000ffe4    00000002     rts430x_lc_ld_eabi.lib : int42.asm.obj (.int42)
 
 EUSCI_A1   0    0000ffe6    00000002     
-                  0000ffe6    00000002     rts430x_lc_rd_eabi.lib : int43.asm.obj (.int43)
+                  0000ffe6    00000002     rts430x_lc_ld_eabi.lib : int43.asm.obj (.int43)
 
 TIMER0_A1 
 *          0    0000ffe8    00000002     
-                  0000ffe8    00000002     rts430x_lc_rd_eabi.lib : int44.asm.obj (.int44)
+                  0000ffe8    00000002     rts430x_lc_ld_eabi.lib : int44.asm.obj (.int44)
 
 TIMER0_A0 
 *          0    0000ffea    00000002     
-                  0000ffea    00000002     rts430x_lc_rd_eabi.lib : int45.asm.obj (.int45)
+                  0000ffea    00000002     rts430x_lc_ld_eabi.lib : int45.asm.obj (.int45)
 
 ADC12_B    0    0000ffec    00000002     
-                  0000ffec    00000002     rts430x_lc_rd_eabi.lib : int46.asm.obj (.int46)
+                  0000ffec    00000002     rts430x_lc_ld_eabi.lib : int46.asm.obj (.int46)
 
 EUSCI_B0   0    0000ffee    00000002     
-                  0000ffee    00000002     rts430x_lc_rd_eabi.lib : int47.asm.obj (.int47)
+                  0000ffee    00000002     rts430x_lc_ld_eabi.lib : int47.asm.obj (.int47)
 
 EUSCI_A0   0    0000fff0    00000002     
-                  0000fff0    00000002     rts430x_lc_rd_eabi.lib : int48.asm.obj (.int48)
+                  0000fff0    00000002     rts430x_lc_ld_eabi.lib : int48.asm.obj (.int48)
 
 WDT        0    0000fff2    00000002     
-                  0000fff2    00000002     rts430x_lc_rd_eabi.lib : int49.asm.obj (.int49)
+                  0000fff2    00000002     rts430x_lc_ld_eabi.lib : int49.asm.obj (.int49)
 
 TIMER0_B1 
 *          0    0000fff4    00000002     
-                  0000fff4    00000002     rts430x_lc_rd_eabi.lib : int50.asm.obj (.int50)
+                  0000fff4    00000002     rts430x_lc_ld_eabi.lib : int50.asm.obj (.int50)
 
 TIMER0_B0 
 *          0    0000fff6    00000002     
-                  0000fff6    00000002     rts430x_lc_rd_eabi.lib : int51.asm.obj (.int51)
+                  0000fff6    00000002     rts430x_lc_ld_eabi.lib : int51.asm.obj (.int51)
 
 COMP_E     0    0000fff8    00000002     
-                  0000fff8    00000002     rts430x_lc_rd_eabi.lib : int52.asm.obj (.int52)
+                  0000fff8    00000002     rts430x_lc_ld_eabi.lib : int52.asm.obj (.int52)
 
 UNMI       0    0000fffa    00000002     
-                  0000fffa    00000002     rts430x_lc_rd_eabi.lib : int53.asm.obj (.int53)
+                  0000fffa    00000002     rts430x_lc_ld_eabi.lib : int53.asm.obj (.int53)
 
 SYSNMI     0    0000fffc    00000002     
-                  0000fffc    00000002     rts430x_lc_rd_eabi.lib : int54.asm.obj (.int54)
+                  0000fffc    00000002     rts430x_lc_ld_eabi.lib : int54.asm.obj (.int54)
 
 .reset     0    0000fffe    00000002     
-                  0000fffe    00000002     rts430x_lc_rd_eabi.lib : boot.c.obj (.reset)
+                  0000fffe    00000002     rts430x_lc_ld_eabi.lib : boot.c.obj (.reset)
 
-.const     0    00008c6e    00000012     
-                  00008c6e    00000012     ov7670.obj (.const:ov7670_reg)
+.const     0    00008c6a    00000020     
+                  00008c6a    00000020     ov7670.obj (.const:ov7670_reg)
 
-.text      0    00010000    000005ca     
-                  00010000    000000ca     main.obj (.text:main)
-                  000100ca    000000bc     ov7670.obj (.text:ov7670_windowSet)
-                  00010186    000000b8     ov7670.obj (.text:ov7670_init)
-                  0001023e    00000078     ov7670.obj (.text:rd_sensor_reg)
-                  000102b6    00000076     rts430x_lc_rd_eabi.lib : copy_decompress_lzss.c.obj (.text:decompress:lzss:__TI_decompress_lzss)
-                  0001032c    00000068     SCCB.obj (.text:SCCBwriteByte)
-                  00010394    00000054     rts430x_lc_rd_eabi.lib : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit_hold_wdt:__TI_auto_init_nobinit_nopinit_hold_wdt)
-                  000103e8    0000003e     ov7670.obj (.text:wr_sensor_reg)
-                  00010426    0000003a     SCCB.obj (.text:SCCBreadByte)
-                  00010460    00000032     SCCB.obj (.text:noAck)
-                  00010492    0000002c     MSPMPU_INIT_LIB_CCS_msp430_large_code_restricted_data.lib : mpu_init.o (.text:__mpu_init)
-                  000104be    00000026     main.obj (.text:fifo_init)
-                  000104e4    00000026     SCCB.obj (.text:stopSCCB)
-                  0001050a    00000022     SCCB.obj (.text:startSCCB)
-                  0001052c    0000001a     SCCB.obj (.text:SCCB_init)
-                  00010546    0000001a     main.obj (.text:vsync_interrupt_init)
-                  00010560    00000016     ov7670.obj (.text:delay_ms)
-                  00010576    00000016     rts430x_lc_rd_eabi.lib : div16u.asm.obj (.text)
-                  0001058c    00000014                            : memcpy.c.obj (.text:memcpy)
-                  000105a0    00000012                            : copy_decompress_none.c.obj (.text:decompress:none:__TI_decompress_none)
-                  000105b2    0000000c     SCCB.obj (.text:delay_us)
-                  000105be    00000006     rts430x_lc_rd_eabi.lib : exit.c.obj (.text:abort)
-                  000105c4    00000004                            : pre_init.c.obj (.text:_system_pre_init)
-                  000105c8    00000002                            : startup.c.obj (.text:_system_post_cinit)
+.text      0    00010000    000006f4     
+                  00010000    00000116     main.obj (.text:main)
+                  00010116    000000bc     ov7670.obj (.text:ov7670_windowSet)
+                  000101d2    000000b8     ov7670.obj (.text:ov7670_init)
+                  0001028a    00000078     rts430x_lc_ld_eabi.lib : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit_hold_wdt:__TI_auto_init_nobinit_nopinit_hold_wdt)
+                  00010302    00000078     ov7670.obj (.text:rd_sensor_reg)
+                  0001037a    00000076     rts430x_lc_ld_eabi.lib : copy_decompress_lzss.c.obj (.text:decompress:lzss:__TI_decompress_lzss)
+                  000103f0    00000068     SCCB.obj (.text:SCCBwriteByte)
+                  00010458    0000003e     rts430x_lc_ld_eabi.lib : asr32.asm.obj (.text:l_asr_const)
+                  00010496    0000003e     ov7670.obj (.text:wr_sensor_reg)
+                  000104d4    0000003c     rts430x_lc_ld_eabi.lib : memcpy.c.obj (.text:memcpy)
+                  00010510    0000003a     SCCB.obj (.text:SCCBreadByte)
+                  0001054a    00000032     SCCB.obj (.text:noAck)
+                  0001057c    00000026     main.obj (.text:fifo_init)
+                  000105a2    00000026     SCCB.obj (.text:stopSCCB)
+                  000105c8    00000026     uart.obj (.text:uart_init)
+                  000105ee    00000024     rts430x_lc_ld_eabi.lib : copy_zero_init.c.obj (.text:decompress:ZI:__TI_zero_init_nomemset:__TI_zero_init_nomemset)
+                  00010612    00000024     uart.obj (.text:uart_send_data)
+                  00010636    00000022     SCCB.obj (.text:startSCCB)
+                  00010658    0000001a     SCCB.obj (.text:SCCB_init)
+                  00010672    0000001a     main.obj (.text:vsync_interrupt_init)
+                  0001068c    00000016     rts430x_lc_ld_eabi.lib : copy_decompress_none.c.obj (.text:decompress:none:__TI_decompress_none)
+                  000106a2    00000016     ov7670.obj (.text:delay_ms)
+                  000106b8    00000016     rts430x_lc_ld_eabi.lib : div16u.asm.obj (.text)
+                  000106ce    0000000e     uart.obj (.text:uart_send_byte)
+                  000106dc    0000000c     SCCB.obj (.text:delay_us)
+                  000106e8    00000006     rts430x_lc_ld_eabi.lib : exit.c.obj (.text:abort)
+                  000106ee    00000004                            : pre_init.c.obj (.text:_system_pre_init)
+                  000106f2    00000002                            : startup.c.obj (.text:_system_post_cinit)
 
 MODULE SUMMARY
 
        Module                       code   ro data   rw data
        ------                       ----   -------   -------
     .\
-       main.obj                     336    2         19205  
-       ov7670.obj                   576    18        0      
+       main.obj                     412    2         19205  
+       ov7670.obj                   576    32        0      
        SCCB.obj                     322    0         0      
+       uart.obj                     88     0         2      
     +--+----------------------------+------+---------+---------+
-       Total:                       1234   20        19205  
+       Total:                       1398   34        19207  
                                                             
-    C:\ti\ccs1271\ccs\ccs_base\msp430\lib\FR59xx\MSPMPU_INIT_LIB_CCS_msp430_large_code_restricted_data.lib
-       mpu_init.o                   44     0         0      
-    +--+----------------------------+------+---------+---------+
-       Total:                       44     0         0      
-                                                            
-    C:\ti\ccs1271\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\rts430x_lc_rd_eabi.lib
+    C:\ti\ccs1271\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\rts430x_lc_ld_eabi.lib
+       autoinit.c.obj               120    0         0      
        copy_decompress_lzss.c.obj   118    0         0      
-       autoinit.c.obj               84     0         0      
-       boot.c.obj                   32     2         0      
+       asr32.asm.obj                62     0         0      
+       memcpy.c.obj                 60     0         0      
+       copy_zero_init.c.obj         36     0         0      
+       boot.c.obj                   28     2         0      
+       copy_decompress_none.c.obj   22     0         0      
        div16u.asm.obj               22     0         0      
-       memcpy.c.obj                 20     0         0      
-       copy_decompress_none.c.obj   18     0         0      
        isr_trap.asm.obj             8      0         0      
        exit.c.obj                   6      0         0      
        pre_init.c.obj               4      0         0      
@@ -359,25 +365,27 @@ MODULE SUMMARY
        int54.asm.obj                0      2         0      
        startup.c.obj                2      0         0      
     +--+----------------------------+------+---------+---------+
-       Total:                       314    74        0      
+       Total:                       488    74        0      
                                                             
        Stack:                       0      0         160    
-       Linker Generated:            0      23        0      
+       Linker Generated:            0      41        0      
     +--+----------------------------+------+---------+---------+
-       Grand Total:                 1592   117       19365  
+       Grand Total:                 1886   149       19367  
 
 
 LINKER GENERATED COPY TABLES
 
-__TI_cinit_table @ 00008c90 records: 1, size/record: 8, table size: 8
-	.data: load addr=00008c88, load size=00000007 bytes, run addr=00001c00, run size=00000005 bytes, compression=lzss
+__TI_cinit_table @ 00008ca4 records: 2, size/record: 8, table size: 16
+	.data: load addr=00008c96, load size=00000007 bytes, run addr=00001c00, run size=00000005 bytes, compression=lzss
+	.bss: load addr=00008c9e, load size=00000006 bytes, run addr=00001c06, run size=00000002 bytes, compression=zero_init
 
 
 LINKER GENERATED HANDLER TABLE
 
-__TI_handler_table @ 00008c80 records: 2, size/record: 4, table size: 8
-	index: 0, handler: __TI_decompress_lzss
-	index: 1, handler: __TI_decompress_none
+__TI_handler_table @ 00008c8a records: 3, size/record: 4, table size: 12
+	index: 0, handler: __TI_zero_init
+	index: 1, handler: __TI_decompress_lzss
+	index: 2, handler: __TI_decompress_none
 
 
 GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name 
@@ -645,7 +653,7 @@ address   name
 000004bc  BIN2BCD                                
 000004bd  BIN2BCD_H                              
 000004bc  BIN2BCD_L                              
-000105be  C$$EXIT                                
+000106e8  C$$EXIT                                
 0000043e  CAPTIO0CTL                             
 0000043f  CAPTIO0CTL_H                           
 0000043e  CAPTIO0CTL_L                           
@@ -1349,9 +1357,9 @@ address   name
 000004b6  RTCYEAR                                
 000004b7  RTCYEAR_H                              
 000004b6  RTCYEAR_L                              
-0001052c  SCCB_init                              
-00010426  SCCBreadByte                           
-0001032c  SCCBwriteByte                          
+00010658  SCCB_init                              
+00010510  SCCBreadByte                           
+000103f0  SCCBwriteByte                          
 00000100  SFRIE1                                 
 00000101  SFRIE1_H                               
 00000100  SFRIE1_L                               
@@ -1936,15 +1944,15 @@ address   name
 0000015c  WDTCTL_L                               
 00002c00  __STACK_END                            
 000000a0  __STACK_SIZE                           
-00008c90  __TI_CINIT_Base                        
-00008c98  __TI_CINIT_Limit                       
-00008c98  __TI_CINIT_Warm                        
-00008c80  __TI_Handler_Table_Base                
-00008c88  __TI_Handler_Table_Limit               
-00008c66  __TI_ISR_TRAP                          
-00010394  __TI_auto_init_nobinit_nopinit_hold_wdt
-000102b6  __TI_decompress_lzss                   
-000105a0  __TI_decompress_none                   
+00008ca4  __TI_CINIT_Base                        
+00008cb4  __TI_CINIT_Limit                       
+00008cb4  __TI_CINIT_Warm                        
+00008c8a  __TI_Handler_Table_Base                
+00008c96  __TI_Handler_Table_Limit               
+00008c62  __TI_ISR_TRAP                          
+0001028a  __TI_auto_init_nobinit_nopinit_hold_wdt
+0001037a  __TI_decompress_lzss                   
+0001068c  __TI_decompress_none                   
 0000ffb4  __TI_int18                             
 0000ffb6  __TI_int19                             
 0000ffb8  __TI_int20                             
@@ -1985,48 +1993,60 @@ address   name
 ffffffff  __TI_pprof_out_hndl                    
 ffffffff  __TI_prof_data_size                    
 ffffffff  __TI_prof_data_start                   
+000105ee  __TI_zero_init_nomemset                
 ffffffff  __c_args__                             
-00000001  __mpu_enable                           
-00010492  __mpu_init                             
-00010576  __mspabi_divu                          
-00010576  __mspabi_remu                          
-00008c46  _c_int00_noargs_mpu                    
+000106b8  __mspabi_divu                          
+000106b8  __mspabi_remu                          
+00010490  __mspabi_sral_1                        
+0001046c  __mspabi_sral_10                       
+00010468  __mspabi_sral_11                       
+00010464  __mspabi_sral_12                       
+00010460  __mspabi_sral_13                       
+0001045c  __mspabi_sral_14                       
+00010458  __mspabi_sral_15                       
+0001048c  __mspabi_sral_2                        
+00010488  __mspabi_sral_3                        
+00010484  __mspabi_sral_4                        
+00010480  __mspabi_sral_5                        
+0001047c  __mspabi_sral_6                        
+00010478  __mspabi_sral_7                        
+00010474  __mspabi_sral_8                        
+00010470  __mspabi_sral_9                        
+00008c46  _c_int00_noargs                        
 0000fffe  _reset_vector                          
 00002b60  _stack                                 
-000105c8  _system_post_cinit                     
-000105c4  _system_pre_init                       
-000105be  abort                                  
-00004000  data_fifo                              
-00010560  delay_ms                               
-000105b2  delay_us                               
-000104be  fifo_init                              
+000106f2  _system_post_cinit                     
+000106ee  _system_pre_init                       
+000106e8  abort                                  
+000106a2  delay_ms                               
+000106dc  delay_us                               
+0001057c  fifo_init                              
 00008c00  fram_ipe_end                           
 00008c00  fram_ipe_start                         
 00004000  fram_rw_start                          
 00008c00  fram_rx_start                          
+00001c06  i                                      
 00010000  main                                   
-0001058c  memcpy                                 
-0000a501  mpu_ctl0_value                         
-00009fbb  mpu_sam_value                          
-00000440  mpu_segment_border1                    
-00000480  mpu_segment_border2                    
-00010460  noAck                                  
-00010186  ov7670_init                            
-00008c6e  ov7670_reg                             
-000100ca  ov7670_windowSet                       
+000104d4  memcpy                                 
+0001054a  noAck                                  
+000101d2  ov7670_init                            
+00008c6a  ov7670_reg                             
+00010116  ov7670_windowSet                       
 00001c00  ov_sta                                 
-0001023e  rd_sensor_reg                          
-0001050a  startSCCB                              
-000104e4  stopSCCB                               
-00010546  vsync_interrupt_init                   
-000103e8  wr_sensor_reg                          
+00010302  rd_sensor_reg                          
+00010636  startSCCB                              
+000105a2  stopSCCB                               
+000105c8  uart_init                              
+000106ce  uart_send_byte                         
+00010612  uart_send_data                         
+00010672  vsync_interrupt_init                   
+00010496  wr_sensor_reg                          
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
 
 address   name                                   
 -------   ----                                   
-00000001  __mpu_enable                           
 000000a0  __STACK_SIZE                           
 00000100  SFRIE1                                 
 00000100  SFRIE1_L                               
@@ -2555,7 +2575,6 @@ address   name
 0000043f  CAPTIO0CTL_H                           
 00000440  TA3CTL                                 
 00000440  TA3CTL_L                               
-00000440  mpu_segment_border1                    
 00000441  TA3CTL_H                               
 00000442  TA3CCTL0                               
 00000442  TA3CCTL0_L                             
@@ -2581,7 +2600,6 @@ address   name
 0000047e  CAPTIO1CTL                             
 0000047e  CAPTIO1CTL_L                           
 0000047f  CAPTIO1CTL_H                           
-00000480  mpu_segment_border2                    
 000004a0  RTCCTL0                                
 000004a0  RTCCTL0_L                              
 000004a1  RTCCTL0_H                              
@@ -3576,24 +3594,22 @@ address   name
 00001c02  FIFO_1                                 
 00001c03  FIFO_2                                 
 00001c04  FIFO_data                              
+00001c06  i                                      
 00002b60  _stack                                 
 00002c00  __STACK_END                            
-00004000  data_fifo                              
 00004000  fram_rw_start                          
 00008c00  PORT4_B1_ISR                           
 00008c00  fram_ipe_end                           
 00008c00  fram_ipe_start                         
 00008c00  fram_rx_start                          
-00008c46  _c_int00_noargs_mpu                    
-00008c66  __TI_ISR_TRAP                          
-00008c6e  ov7670_reg                             
-00008c80  __TI_Handler_Table_Base                
-00008c88  __TI_Handler_Table_Limit               
-00008c90  __TI_CINIT_Base                        
-00008c98  __TI_CINIT_Limit                       
-00008c98  __TI_CINIT_Warm                        
-00009fbb  mpu_sam_value                          
-0000a501  mpu_ctl0_value                         
+00008c46  _c_int00_noargs                        
+00008c62  __TI_ISR_TRAP                          
+00008c6a  ov7670_reg                             
+00008c8a  __TI_Handler_Table_Base                
+00008c96  __TI_Handler_Table_Limit               
+00008ca4  __TI_CINIT_Base                        
+00008cb4  __TI_CINIT_Limit                       
+00008cb4  __TI_CINIT_Warm                        
 0000ffb4  __TI_int18                             
 0000ffb6  __TI_int19                             
 0000ffb8  __TI_int20                             
@@ -3633,34 +3649,52 @@ address   name
 0000fffc  __TI_int54                             
 0000fffe  _reset_vector                          
 00010000  main                                   
-000100ca  ov7670_windowSet                       
-00010186  ov7670_init                            
-0001023e  rd_sensor_reg                          
-000102b6  __TI_decompress_lzss                   
-0001032c  SCCBwriteByte                          
-00010394  __TI_auto_init_nobinit_nopinit_hold_wdt
-000103e8  wr_sensor_reg                          
-00010426  SCCBreadByte                           
-00010460  noAck                                  
-00010492  __mpu_init                             
-000104be  fifo_init                              
-000104e4  stopSCCB                               
-0001050a  startSCCB                              
-0001052c  SCCB_init                              
-00010546  vsync_interrupt_init                   
-00010560  delay_ms                               
-00010576  __mspabi_divu                          
-00010576  __mspabi_remu                          
-0001058c  memcpy                                 
-000105a0  __TI_decompress_none                   
-000105b2  delay_us                               
-000105be  C$$EXIT                                
-000105be  abort                                  
-000105c4  _system_pre_init                       
-000105c8  _system_post_cinit                     
+00010116  ov7670_windowSet                       
+000101d2  ov7670_init                            
+0001028a  __TI_auto_init_nobinit_nopinit_hold_wdt
+00010302  rd_sensor_reg                          
+0001037a  __TI_decompress_lzss                   
+000103f0  SCCBwriteByte                          
+00010458  __mspabi_sral_15                       
+0001045c  __mspabi_sral_14                       
+00010460  __mspabi_sral_13                       
+00010464  __mspabi_sral_12                       
+00010468  __mspabi_sral_11                       
+0001046c  __mspabi_sral_10                       
+00010470  __mspabi_sral_9                        
+00010474  __mspabi_sral_8                        
+00010478  __mspabi_sral_7                        
+0001047c  __mspabi_sral_6                        
+00010480  __mspabi_sral_5                        
+00010484  __mspabi_sral_4                        
+00010488  __mspabi_sral_3                        
+0001048c  __mspabi_sral_2                        
+00010490  __mspabi_sral_1                        
+00010496  wr_sensor_reg                          
+000104d4  memcpy                                 
+00010510  SCCBreadByte                           
+0001054a  noAck                                  
+0001057c  fifo_init                              
+000105a2  stopSCCB                               
+000105c8  uart_init                              
+000105ee  __TI_zero_init_nomemset                
+00010612  uart_send_data                         
+00010636  startSCCB                              
+00010658  SCCB_init                              
+00010672  vsync_interrupt_init                   
+0001068c  __TI_decompress_none                   
+000106a2  delay_ms                               
+000106b8  __mspabi_divu                          
+000106b8  __mspabi_remu                          
+000106ce  uart_send_byte                         
+000106dc  delay_us                               
+000106e8  C$$EXIT                                
+000106e8  abort                                  
+000106ee  _system_pre_init                       
+000106f2  _system_post_cinit                     
 ffffffff  __TI_pprof_out_hndl                    
 ffffffff  __TI_prof_data_size                    
 ffffffff  __TI_prof_data_start                   
 ffffffff  __c_args__                             
 
-[1636 symbols]
+[1649 symbols]
